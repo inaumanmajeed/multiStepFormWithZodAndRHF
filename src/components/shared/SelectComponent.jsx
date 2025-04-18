@@ -8,9 +8,8 @@ const SelectComponent = ({
   field,
   onChange,
   options,
-  width,
-  components,
   isSearchable,
+  width,
   ...props
 }) => {
   const containerStyles = width
@@ -61,7 +60,6 @@ const SelectComponent = ({
         classNamePrefix="react-select"
         placeholder={label}
         isSearchable={isSearchable}
-        components={components}
         onChange={(selectedOption) => {
           field.onChange(selectedOption.value);
           if (onChange) {
