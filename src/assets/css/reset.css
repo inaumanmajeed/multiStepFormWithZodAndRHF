@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+/* reset css baseline */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  text-align: left;
+  font-weight: 400;
+  text-decoration: none;
+  color: #7c8ba0;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.upload-img {
+  width: 112px;
+  height: 106px;
+  border-radius: 8px;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg%20width%3D'100%25'%20height%3D'100%25'%20viewBox%3D'0%200%20112%20106'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Crect%20x%3D'0.5'%20y%3D'0.5'%20width%3D'111'%20height%3D'105'%20rx%3D'8'%20ry%3D'8'%20fill%3D'none'%20stroke%3D'%236F6F6F'%20stroke-width%3D'1'%20stroke-dasharray%3D'6%2C4'%20/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+
+.fiveHundred {
+font-weight: 500;
+}
