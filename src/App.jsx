@@ -7,76 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ContactDetails from "./components/from/ContactDetails";
 import LinkAccounts from "./components/from/LinkAccounts";
 import BusinessHours from "./components/from/BusinessHours";
-import { fieldToStepMap } from "./utils/staticValues";
+import { fieldToStepMap, initialValues } from "./utils/staticValues";
 import { cleanSubmittedValues } from "./utils/commonFunctions";
-
-const initialValues = {
-  businessName: "",
-  companyNumber: "",
-  country: "",
-  vatNumber: "",
-  logo: null,
-  address: "",
-  apptNo: "",
-  state: "",
-  city: "",
-  postCode: "",
-  primaryContactName: "",
-  primaryContactEmail: "",
-  contactNumber: "",
-  landline: "",
-  linkedAccounts: [
-    {
-      profile: "",
-      webAddress: "",
-    },
-  ],
-  openingHours: [
-    {
-      day: "Monday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Tuesday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Wednesday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Thursday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Friday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Saturday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Sunday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-  ],
-  specialHours: [],
-};
 
 const StepContent = ({ currentStep, handleNextStep }) => {
   switch (currentStep) {
@@ -99,13 +31,13 @@ const ConsolePopup = ({ isOpen, onClose, submittedValues }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-[700px] w-full">
         <h2 className="text-lg font-bold mb-4">Submitted Values</h2>
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-64">
+        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-[65dvh]">
           {JSON.stringify(submittedValues, null, 2)}
         </pre>
         <button
-          className="mt-4 bg-[#2A9D8F] text-white px-4 py-2 rounded-full"
+          className="mt-4 w-full bg-[#2A9D8F] text-white px-4 py-2 rounded-full"
           onClick={onClose}
         >
           Close
@@ -119,7 +51,6 @@ const App = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [submittedValues, setSubmittedValues] = useState(null);
-  console.log("🚀 ~ App ~ submittedValues:", submittedValues)
 
   const handleNextStep = () => {
     if (currentStep < 4) {
@@ -134,7 +65,46 @@ const App = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = (values) => {
-    const cleanedValues = cleanSubmittedValues(values);
+    const payLoad = {
+      BusinessInfo: {
+        businessName: values.businessName,
+        companyNumber: values.companyNumber,
+        country: values.country,
+        vatNumber: values.vatNumber,
+        logo: values.logo,
+        address: values.address,
+        apptNo: values.apptNo,
+        state: values.state,
+        city: values.city,
+        postCode: values.postCode,
+      },
+      ContactDetails: {
+        primaryContactName: values.primaryContactName,
+        primaryContactEmail: values.primaryContactEmail,
+        contactNumber: values.contactNumber,
+        landline: values.landline,
+      },
+      LinkAccounts: {
+        linkedAccounts: values.linkedAccounts.map((account) => ({
+          profile: account.profile,
+          webAddress: account.webAddress,
+        })),
+      },
+      BusinessHours: {
+        openingHours: values.openingHours.map((hour) => ({
+          day: hour.day,
+          open: hour.open,
+          startTime: hour.startTime,
+          endTime: hour.endTime,
+        })),
+        specialHours: values.specialHours.map((hour) => ({
+          date: hour.date,
+          startTime: hour.start,
+          endTime: hour.end,
+        })),
+      },
+    };
+    const cleanedValues = cleanSubmittedValues(payLoad);
     setSubmittedValues(cleanedValues);
     setIsPopupOpen(true);
     setCurrentStep(1);

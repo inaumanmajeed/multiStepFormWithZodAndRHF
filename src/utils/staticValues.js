@@ -24,3 +24,71 @@ export const fieldToStepMap = {
   "linkedAccounts.0.profile": 3,
   "linkedAccounts.0.webAddress": 3,
 };
+
+export const initialValues = {
+  businessName: "",
+  companyNumber: "",
+  country: "",
+  vatNumber: "",
+  logo: null,
+  address: "",
+  apptNo: "",
+  state: "",
+  city: "",
+  postCode: "",
+  primaryContactName: "",
+  primaryContactEmail: "",
+  contactNumber: "",
+  landline: "",
+  linkedAccounts: [
+    {
+      profile: "",
+      webAddress: "",
+    },
+  ],
+  openingHours: [
+    {
+      day: "Monday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Tuesday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Wednesday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Thursday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Friday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Saturday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Sunday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+  ],
+  specialHours: [],
+};
