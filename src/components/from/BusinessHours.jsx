@@ -42,8 +42,8 @@ const BusinessHours = () => {
       const defaultStart = "09:00 AM";
       const defaultEnd = "04:00 PM";
 
-      setValue(`openingHours.${index}.start`, defaultStart);
-      setValue(`openingHours.${index}.end`, defaultEnd);
+      setValue(`openingHours.${index}.startTime`, defaultStart);
+      setValue(`openingHours.${index}.endTime`, defaultEnd);
 
       setLocalTimes((prev) => ({
         ...prev,
@@ -60,9 +60,8 @@ const BusinessHours = () => {
   const handleBlur = (index, type) => {
     const key = `${index}-${type}`;
     const value = localTimes[key];
-
     if (value) {
-      setValue(`openingHours.${index}.${type}`, value, {
+      setValue(`openingHours.${index}.${type}Time`, value, {
         shouldDirty: true,
       });
     }
@@ -111,7 +110,7 @@ const BusinessHours = () => {
                   onBlur={() => handleBlur(index, "start")}
                   value={
                     localTimes[`${index}-start`] ??
-                    openingHours[index].start ??
+                    openingHours[index].startTime ??
                     ""
                   }
                   disableClock={true}
@@ -129,7 +128,9 @@ const BusinessHours = () => {
                   onChange={(val) => handleTimeChange(index, "end", val)}
                   onBlur={() => handleBlur(index, "end")}
                   value={
-                    localTimes[`${index}-end`] ?? openingHours[index].end ?? ""
+                    localTimes[`${index}-end`] ??
+                    openingHours[index].endTime ??
+                    ""
                   }
                   disableClock={true}
                   clearIcon={null}

@@ -134,7 +134,7 @@ const App = () => {
 
   const onSubmit = (values) => {
     setSubmittedValues(values);
-    setIsPopupOpen(true);
+    // setIsPopupOpen(true);
     // setCurrentStep(1); 
     // methods.reset(); 
     // setIsPopupOpen(false);

@@ -52,8 +52,8 @@ export const businessSchema = z.object({
       z.object({
         date: z.string().optional(),
         open: z.boolean(),
-        startTime: z.string().optional(),
-        endTime: z.string().optional(),
+        start: z.string().optional(),
+        end: z.string().optional(),
       })
     )
     .optional(),

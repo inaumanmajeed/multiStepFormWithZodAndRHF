@@ -59,6 +59,7 @@ const SelectComponent = ({
         styles={customStyles}
         className="peer"
         classNamePrefix="react-select"
+        value={options.find((option) => option.value === field.value)}
         placeholder={label}
         isDisabled={disabled}
         isSearchable={isSearchable}
