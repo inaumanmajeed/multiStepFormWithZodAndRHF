@@ -1,5 +1,29 @@
 import React from "react";
 import Select from "react-select";
+import Flag from "react-world-flags";
+import { FixedSizeList as List } from "react-window";
+
+const heightPerOption = 40;
+
+const MenuList = (props) => {
+  const { options, children, maxHeight, getValue } = props;
+  const [value] = getValue();
+  const initialOffset = options.indexOf(value) * heightPerOption;
+
+  const Row = ({ index, style }) => <div style={style}>{children[index]}</div>;
+
+  return (
+    <List
+      height={maxHeight}
+      itemCount={children.length}
+      itemSize={heightPerOption}
+      initialScrollOffset={initialOffset}
+      width="100%"
+    >
+      {Row}
+    </List>
+  );
+};
 
 const SelectComponent = ({
   label,
@@ -9,6 +33,7 @@ const SelectComponent = ({
   onChange,
   options,
   isSearchable,
+  isCountry,
   width,
   disabled,
   ...props
@@ -44,15 +69,50 @@ const SelectComponent = ({
       color: "#3B4054",
       fontSize: "14px",
       fontWeight: "400",
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+    }),
+    option: (provided) => ({
+      ...provided,
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
     }),
     indicatorSeparator: () => ({
       display: "none",
     }),
   };
 
+  const customFilterOption = (option, inputValue) =>
+    option.data.label.toLowerCase().includes(inputValue.toLowerCase());
+
+  const getOptionLabel = (option) => {
+    if (isCountry) {
+      return (
+        <div className="flex items-center gap-2">
+          <Flag code={option.code} style={{ width: 20, height: 15 }} />
+          <span>{option.label}</span>
+        </div>
+      );
+    }
+    return option.label;
+  };
+
+  const getSingleValue = (option) => {
+    if (isCountry) {
+      return (
+        <div className="flex items-center gap-2">
+          <Flag code={option.code} style={{ width: 20, height: 15 }} />
+          <span>{option.label}</span>
+        </div>
+      );
+    }
+    return option.label;
+  };
+
   return (
     <div style={containerStyles} className={"relative w-full grow mt-6"}>
-      {/* Select field */}
       <Select
         id={name}
         options={options}
@@ -60,6 +120,7 @@ const SelectComponent = ({
         className="peer"
         classNamePrefix="react-select"
         value={options.find((option) => option.value === field.value)}
+        filterOption={isCountry ? customFilterOption : undefined}
         placeholder={label}
         isDisabled={disabled}
         isSearchable={isSearchable}
@@ -69,10 +130,13 @@ const SelectComponent = ({
             onChange(selectedOption);
           }
         }}
+        getOptionLabel={getOptionLabel}
+        formatOptionLabel={isCountry ? getOptionLabel : undefined}
+        formatValue={isCountry ? getSingleValue : undefined}
+        components={{ MenuList }}
         {...props}
       />
 
-      {/* Floating label */}
       <label
         htmlFor={name}
         className={`absolute left-4 -top-2 text-[10px] px-1 bg-white transition-all duration-200
@@ -86,7 +150,6 @@ const SelectComponent = ({
         {label}
       </label>
 
-      {/* Error message */}
       {error && (
         <p className="text-xs text-red-500 mt-1 ml-1">
           {error.message || "This field is required"}

@@ -70,6 +70,7 @@ const BusinessInfo = ({ handleNextStep }) => {
               options={countryOptions}
               error={errors.country}
               isSearchable
+              isCountry
               width="50%"
             />
           )}
