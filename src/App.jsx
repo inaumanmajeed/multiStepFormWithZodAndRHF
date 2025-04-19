@@ -8,6 +8,7 @@ import ContactDetails from "./components/from/ContactDetails";
 import LinkAccounts from "./components/from/LinkAccounts";
 import BusinessHours from "./components/from/BusinessHours";
 import { fieldToStepMap } from "./utils/staticValues";
+import { cleanSubmittedValues } from "./utils/commonFunctions";
 
 const initialValues = {
   businessName: "",
@@ -133,11 +134,11 @@ const App = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = (values) => {
-    setSubmittedValues(values);
-    // setIsPopupOpen(true);
-    // setCurrentStep(1); 
-    // methods.reset(); 
-    // setIsPopupOpen(false);
+    const cleanedValues = cleanSubmittedValues(values);
+    setSubmittedValues(cleanedValues);
+    setIsPopupOpen(true);
+    setCurrentStep(1);
+    methods.reset();
   };
 
   const onError = (errors) => {
