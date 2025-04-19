@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { useFormContext, useFieldArray } from "react-hook-form";
 
@@ -18,8 +20,17 @@ const BusinessHours = () => {
     control,
     name: "openingHours",
   });
+  const {
+    fields: specialFields,
+    append: appendSpecial,
+    remove: removeSpecial,
+  } = useFieldArray({
+    control,
+    name: "specialHours",
+  });
 
   const openingHours = watch("openingHours");
+  const specialHours = watch("specialHours");
 
   const handleToggle = (index) => {
     const current = openingHours[index];
@@ -153,6 +164,111 @@ const BusinessHours = () => {
           <p className="text-[#3B4054] font-medium text-[18px]">
             Special Business Hours
           </p>
+          {specialFields.map((item, index) => (
+            <div
+              key={item.id}
+              className="flex items-center gap-4 flex-wrap sm:flex-nowrap"
+            >
+              {/* Date Picker */}
+              <DatePicker
+                selected={
+                  specialHours[index]?.date
+                    ? new Date(specialHours[index].date)
+                    : null
+                }
+                onChange={(date) =>
+                  setValue(`specialHours.${index}.date`, date.toISOString())
+                }
+                dateFormat="dd/MM/yyyy"
+                placeholderText="Select date"
+                className="border border-gray-300 rounded-md px-2 py-1"
+              />
+
+              {/* Toggle */}
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={specialHours[index]?.open}
+                  onChange={() =>
+                    setValue(
+                      `specialHours.${index}.open`,
+                      !specialHours[index]?.open
+                    )
+                  }
+                />
+                <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-[#2CA58D] peer-focus:ring-2 peer-focus:ring-[#2CA58D] after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full peer-checked:after:left-[2px]" />
+              </label>
+              <span className="text-[#3B4054] w-20">
+                {specialHours[index]?.open ? "Open" : "Closed"}
+              </span>
+
+              {/* Time Pickers */}
+              <TimePicker
+                onChange={(val) =>
+                  setValue(`specialHours.${index}.start`, val, {
+                    shouldDirty: true,
+                  })
+                }
+                value={specialHours[index]?.start ?? ""}
+                disableClock={true}
+                clearIcon={null}
+                disabled={!specialHours[index]?.open}
+                format="hh:mm a"
+                className={`w-28 ${
+                  !specialHours[index]?.open
+                    ? "opacity-50 pointer-events-none"
+                    : ""
+                }`}
+              />
+              <img src={separator} alt="Separator" />
+              <TimePicker
+                onChange={(val) =>
+                  setValue(`specialHours.${index}.end`, val, {
+                    shouldDirty: true,
+                  })
+                }
+                value={specialHours[index]?.end ?? ""}
+                disableClock={true}
+                clearIcon={null}
+                disabled={!specialHours[index]?.open}
+                format="hh:mm a"
+                className={`w-28 ${
+                  !specialHours[index]?.open
+                    ? "opacity-50 pointer-events-none"
+                    : ""
+                }`}
+              />
+
+              {/* Remove Button */}
+              <button
+                type="button"
+                onClick={() => removeSpecial(index)}
+                className="w-5 h-5 flex items-center justify-center rounded-full border-[2px] border-[#7C8BA0] text-[#7C8BA0] text-[12px] font-bold"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+
+          {/* Add Button */}
+          <button
+            type="button"
+            onClick={() =>
+              appendSpecial({
+                date: "",
+                open: false,
+                start: "",
+                end: "",
+              })
+            }
+            className="text-[#2CA58D] px-4 py-1 flex justify-center gap-2 items-center w-fit text-sm mt-2"
+          >
+            <span className="border flex items-center justify-center pt-[1px] border-[#2CA58D] w-4 h-4 rounded-full">
+              +
+            </span>{" "}
+            Add Special Business Hours
+          </button>
         </section>
       </div>
     </>

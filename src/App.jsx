@@ -30,50 +30,8 @@ const initialValues = {
       webAddress: "",
     },
   ],
-  openingHours: [
-    {
-      day: "Monday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Tuesday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Wednesday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Thursday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Friday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Saturday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-    {
-      day: "Sunday",
-      open: false,
-      startTime: "",
-      endTime: "",
-    },
-  ],
+  openingHours: [],
+  specialHours: [],
 };
 
 const StepContent = ({ currentStep, handleNextStep }) => {
@@ -92,8 +50,32 @@ const StepContent = ({ currentStep, handleNextStep }) => {
   }
 };
 
+const ConsolePopup = ({ isOpen, onClose, submittedValues }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+        <h2 className="text-lg font-bold mb-4">Submitted Values</h2>
+        <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-64">
+          {JSON.stringify(submittedValues, null, 2)}
+        </pre>
+        <button
+          className="mt-4 bg-[#2A9D8F] text-white px-4 py-2 rounded-full"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const App = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [submittedValues, setSubmittedValues] = useState(null);
+  console.log("🚀 ~ App ~ submittedValues:", submittedValues);
 
   const handleNextStep = () => {
     if (currentStep < 4) {
@@ -108,8 +90,13 @@ const App = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = (values) => {
-    console.log("Form submitted successfully:", values);
+    setSubmittedValues(values);
+    // setIsPopupOpen(true);
+    // setCurrentStep(1);
+    // methods.reset();
+    // setIsPopupOpen(false);
   };
+
   const onError = (errors) => {
     const flatErrors = Object.keys(errors);
     if (flatErrors.length > 0) {
@@ -135,8 +122,23 @@ const App = () => {
               handleNextStep={handleNextStep}
             />
           </form>
+          {currentStep === 4 && (
+            <div className="flex justify-center items-center mt-10">
+              <button
+                className="bg-[#2A9D8F] text-white w-full max-w-[371px] h-[50px] rounded-full"
+                onClick={handleSubmit(onSubmit, onError)}
+              >
+                Submit
+              </button>
+            </div>
+          )}
         </FormProvider>
       </div>
+      <ConsolePopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        submittedValues={submittedValues}
+      />
     </div>
   );
 };

@@ -47,4 +47,14 @@ export const businessSchema = z.object({
       })
     )
     .optional(),
+  specialHours: z
+    .array(
+      z.object({
+        date: z.string().optional(),
+        open: z.boolean(),
+        startTime: z.string().optional(),
+        endTime: z.string().optional(),
+      })
+    )
+    .optional(),
 });
