@@ -29,4 +29,12 @@ export const businessSchema = z.object({
   landline: z.string().optional(),
   profile: z.string().optional(),
   webAddress: z.string().optional(),
+  linkedAccounts: z
+    .array(
+      z.object({
+        profile: z.string().optional(),
+        webAddress: z.string().optional(),
+      })
+    )
+    .optional(),
 });

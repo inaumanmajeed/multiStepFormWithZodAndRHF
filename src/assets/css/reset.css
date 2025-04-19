@@ -57,3 +57,7 @@ input[type="number"] {
 .fiveHundred {
   font-weight: 500;
 }
+
+.shadowMain {
+box-shadow: 0px 4px 4px 0px #0000001A;
+}

@@ -1,19 +1,15 @@
 import React, { useEffect } from "react";
-import {
-  Controller,
-  useFieldArray,
-  useWatch,
-  useFormContext,
-} from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import InputComponent from "../shared/inputComponent";
 import SelectComponent from "../shared/SelectComponent";
 import { socialOptions } from "../../utils/staticValues";
 
 const LinkAccounts = ({ handleNextStep }) => {
   const {
-    setValue,
     control,
+    setValue,
     formState: { errors },
+    getValues, // Use getValues instead of watch
   } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -25,31 +21,24 @@ const LinkAccounts = ({ handleNextStep }) => {
     if (fields.length === 0) {
       append({ profile: "", webAddress: "", isConnected: false });
     }
-  }, []);
-
-  const watchLinkedAccounts = useWatch({
-    control,
-    name: "linkedAccounts",
-  });
+  }, [fields.length, append]);
 
   const handleToggleConnection = (index) => {
-    const current = watchLinkedAccounts?.[index];
+    const linkedAccounts = getValues("linkedAccounts");
+    const current = linkedAccounts?.[index];
     const isConnected = current?.isConnected;
 
     if (isConnected) {
       if (index === 0 && fields.length === 1) {
-        // If it's the first and only row: just reset it
         setValue(`linkedAccounts.${index}`, {
           profile: "",
           webAddress: "",
           isConnected: false,
         });
       } else {
-        // Remove the row
         remove(index);
       }
     } else {
-      // Toggle isConnected to true
       setValue(`linkedAccounts.${index}.isConnected`, true);
 
       // Append a new empty row only if there's a webAddress
@@ -67,7 +56,7 @@ const LinkAccounts = ({ handleNextStep }) => {
       </p>
 
       {fields.map((item, index) => {
-        const account = watchLinkedAccounts?.[index];
+        const account = getValues("linkedAccounts")?.[index];
         const webAddressValue = account?.webAddress;
         const isConnected = account?.isConnected;
         const width = webAddressValue ? "50%" : "70%";

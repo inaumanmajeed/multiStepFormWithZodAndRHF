@@ -57,36 +57,29 @@ const App = () => {
     }
   };
 
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm({
+  const methods = useForm({
     defaultValues: initialValues,
     resolver: zodResolver(businessSchema),
   });
+  const { handleSubmit } = methods;
 
-  const onSubmit = (data) => {
-    console.log("Form submitted successfully:", data);
+  const onSubmit = (values) => {
+    console.log("Form submitted successfully:", values);
   };
-const onError = (errors) => {
-  const flatErrors = Object.keys(errors);
-  if (flatErrors.length > 0) {
-    const firstErrorField = flatErrors[0];
-    const step = fieldToStepMap[firstErrorField] || 1;
-    setCurrentStep(step);
-  }
-};
-
+  const onError = (errors) => {
+    const flatErrors = Object.keys(errors);
+    if (flatErrors.length > 0) {
+      const firstErrorField = flatErrors[0];
+      const step = fieldToStepMap[firstErrorField] || 1;
+      setCurrentStep(step);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
       <div className="max-w-4xl mx-auto p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
-        <FormProvider
-          {...{ control, setValue, handleSubmit, formState: { errors } }}
-        >
+        <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit, onError)}
             onKeyDown={(e) => {
@@ -94,10 +87,7 @@ const onError = (errors) => {
             }}
           >
             <StepContent
-              control={control}
               currentStep={currentStep}
-              errors={errors}
-              setValue={setValue}
               handleNextStep={handleNextStep}
             />
           </form>
