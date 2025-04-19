@@ -49,7 +49,7 @@ const LinkAccounts = ({ handleNextStep }) => {
   };
 
   return (
-    <div>
+    <>
       <h1 className="font-semibold text-[#3B4054] text-2xl">Link Accounts</h1>
       <p className="text-[#3B4054] text-sm font-normal mt-2">
         Connect your social accounts that you want to track and manage with us.
@@ -121,7 +121,7 @@ const LinkAccounts = ({ handleNextStep }) => {
           Continue
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

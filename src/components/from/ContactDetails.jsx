@@ -8,7 +8,7 @@ const ContactDetails = ({ handleNextStep }) => {
       formState: { errors },
     } = useFormContext();
   return (
-    <div>
+    <>
       <h1 className="font-semibold text-[#3B4054] text-2xl">Contact details</h1>
       <section className="flex justify-between flex-wrap">
         <Controller
@@ -70,7 +70,7 @@ const ContactDetails = ({ handleNextStep }) => {
           Continue
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

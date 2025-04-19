@@ -30,6 +30,50 @@ const initialValues = {
       webAddress: "",
     },
   ],
+  openingHours: [
+    {
+      day: "Monday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Tuesday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Wednesday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Thursday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Friday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Saturday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Sunday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+  ],
 };
 
 const StepContent = ({ currentStep, handleNextStep }) => {
@@ -78,7 +122,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
-      <div className="max-w-4xl mx-auto p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
+      <div className="max-w-4xl mx-auto shadowMain p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(onSubmit, onError)}

@@ -59,5 +59,29 @@ input[type="number"] {
 }
 
 .shadowMain {
-box-shadow: 0px 4px 4px 0px #0000001A;
+  box-shadow: 0px 4px 4px 0px #0000001a;
+}
+
+.react-time-picker__wrapper {
+  border-color: #e4e4e3 !important;
+  height: 40px !important;
+}
+.react-time-picker__inputGroup__input {
+  outline: none !important;
+}
+
+.react-time-picker__inputGroup__input:invalid {
+  background-color: transparent !important;
+}
+
+.react-time-picker__inputGroup {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.react-time-picker__inputGroup__amPm{
+   appearance: none !important;
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: none !important;
 }

@@ -37,4 +37,14 @@ export const businessSchema = z.object({
       })
     )
     .optional(),
+  openingHours: z
+    .array(
+      z.object({
+        day: z.string().min(1, "Day is required"),
+        open: z.boolean(),
+        startTime: z.string().optional(),
+        endTime: z.string().optional(),
+      })
+    )
+    .optional(),
 });

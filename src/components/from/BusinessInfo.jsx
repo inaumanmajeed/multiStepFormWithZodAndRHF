@@ -33,7 +33,7 @@ const BusinessInfo = ({ handleNextStep }) => {
     if (fileInput) fileInput.value = "";
   };
   return (
-    <div>
+    <>
       <h1 className="font-semibold text-[#3B4054] text-2xl">General details</h1>
       <section className="flex justify-between flex-wrap">
         <Controller
@@ -212,7 +212,7 @@ const BusinessInfo = ({ handleNextStep }) => {
           Continue
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
