@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from "./components/shared/Stepper";
 import BusinessInfo from "./components/from/BusinessInfo";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { businessSchema } from "./utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ContactDetails from "./components/from/ContactDetails";
@@ -16,7 +16,6 @@ const StepContent = ({ currentStep, handleNextStep }) => {
       return <BusinessInfo handleNextStep={handleNextStep} />;
     case 2:
       return <ContactDetails handleNextStep={handleNextStep} />;
-
     case 3:
       return <LinkAccounts handleNextStep={handleNextStep} />;
     case 4:
@@ -51,18 +50,118 @@ const App = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [submittedValues, setSubmittedValues] = useState(null);
+  const [progressData, setProgressData] = useState({
+    BusinessInfo: 0,
+    ContactDetails: 0,
+    LinkAccounts: 0,
+    BusinessHours: 0,
+  });
+
+  const methods = useForm({
+    defaultValues: initialValues,
+    resolver: zodResolver(businessSchema),
+  });
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+
+  const allValues = useWatch({ control: methods.control });
+
+  useEffect(() => {
+    const totalFields = {
+      BusinessInfo: [
+        "businessName",
+        "companyNumber",
+        "country",
+        "vatNumber",
+        "logo",
+        "address",
+        "apptNo",
+        "state",
+        "city",
+        "postCode",
+      ],
+      ContactDetails: [
+        "primaryContactName",
+        "primaryContactEmail",
+        "contactNumber",
+        "landline",
+      ],
+      LinkAccounts: ["linkedAccounts"],
+      BusinessHours: ["openingHours", "specialHours"],
+    };
+
+    const newProgress = {};
+
+    Object.entries(totalFields).forEach(([key, fields]) => {
+      let filledCount = 0;
+
+      fields.forEach((field) => {
+        const value = allValues?.[field];
+
+        const isFilled = (() => {
+          // Special case for linkedAccounts
+          if (key === "LinkAccounts" && field === "linkedAccounts") {
+            return Array.isArray(value) && value.some((v) => v?.isConnected);
+          }
+
+          // Special case for openingHours
+          if (key === "BusinessHours" && field === "openingHours") {
+            // Check if any day has 'open: true'
+            return Array.isArray(value) && value.some((v) => v?.open === true);
+          }
+
+          // Special case for specialHours
+          if (key === "BusinessHours" && field === "specialHours") {
+            // Check if any special date has 'open: true'
+            return Array.isArray(value) && value.some((v) => v?.open === true);
+          }
+
+          if (value instanceof File) {
+            return value.size > 0;
+          }
+
+          if (Array.isArray(value)) {
+            if (value.length === 0) return false;
+
+            if (typeof value[0] === "object") {
+              return value.some((obj) =>
+                Object.values(obj).some(
+                  (v) => v !== "" && v !== null && v !== undefined
+                )
+              );
+            }
+
+            return value.some((v) => v !== "" && v !== null && v !== undefined);
+          }
+
+          if (typeof value === "object" && value !== null) {
+            return Object.values(value).some(
+              (v) => v !== "" && v !== null && v !== undefined
+            );
+          }
+
+          return value !== "" && value !== undefined && value !== null;
+        })();
+
+        if (isFilled) {
+          filledCount += 1;
+        }
+      });
+
+      const percent = Math.round((filledCount / fields.length) * 100);
+      newProgress[key] = percent;
+    });
+
+    setProgressData(newProgress);
+  }, [allValues]);
 
   const handleNextStep = () => {
     if (currentStep < 4) {
       setCurrentStep((prevStep) => prevStep + 1);
     }
   };
-
-  const methods = useForm({
-    defaultValues: initialValues,
-    resolver: zodResolver(businessSchema),
-  });
-  const { handleSubmit } = methods;
 
   const onSubmit = (values) => {
     const payLoad = {
@@ -122,7 +221,12 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      <Stepper
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        progressData={progressData}
+        zodErrors={errors}
+      />
       <div className="max-w-4xl mx-auto shadowMain p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
         <FormProvider {...methods}>
           <form
