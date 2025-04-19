@@ -7,6 +7,7 @@ const InputComponent = ({
   field,
   width,
   type = "text",
+  disabled = false,
   ...props
 }) => {
   const containerStyles = width
@@ -20,6 +21,7 @@ const InputComponent = ({
         {...field}
         {...props}
         type={type}
+        disabled={disabled}
         placeholder=" "
         onKeyDown={(e) => {
           const invalidChars = ["e", "E", "+", "-"];

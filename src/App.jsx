@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import Stepper from "./components/shared/Stepper";
 import BusinessInfo from "./components/from/BusinessInfo";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { businessSchema } from "./utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ContactDetails from "./components/from/ContactDetails";
+import LinkAccounts from "./components/from/LinkAccounts";
+import BusinessHours from "./components/from/BusinessHours";
+import { fieldToStepMap } from "./utils/staticValues";
 
 const initialValues = {
   businessName: "",
@@ -16,31 +20,29 @@ const initialValues = {
   state: "",
   city: "",
   postCode: "",
+  primaryContactName: "",
+  primaryContactEmail: "",
+  contactNumber: "",
+  landline: "",
+  linkedAccounts: [
+    {
+      profile: "",
+      webAddress: "",
+    },
+  ],
 };
 
-const StepContent = ({
-  currentStep,
-  control,
-  errors,
-  setValue,
-  handleNextStep,
-}) => {
+const StepContent = ({ currentStep, handleNextStep }) => {
   switch (currentStep) {
     case 1:
-      return (
-        <BusinessInfo
-          control={control}
-          errors={errors}
-          setValue={setValue}
-          handleNextStep={handleNextStep}
-        />
-      );
+      return <BusinessInfo handleNextStep={handleNextStep} />;
     case 2:
-      return <div className="p-6">📞 Contact Details Content</div>;
+      return <ContactDetails handleNextStep={handleNextStep} />;
+
     case 3:
-      return <div className="p-6">🔗 Link Account Content</div>;
+      return <LinkAccounts handleNextStep={handleNextStep} />;
     case 4:
-      return <div className="p-6">🔐 Access & Permissions Content</div>;
+      return <BusinessHours />;
     default:
       return null;
   }
@@ -65,38 +67,41 @@ const App = () => {
     resolver: zodResolver(businessSchema),
   });
 
-  const onSubmit = async (values) => {
-    try {
-      console.log("Form submitted successfully:", values);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+  const onSubmit = (data) => {
+    console.log("Form submitted successfully:", data);
   };
+const onError = (errors) => {
+  const flatErrors = Object.keys(errors);
+  if (flatErrors.length > 0) {
+    const firstErrorField = flatErrors[0];
+    const step = fieldToStepMap[firstErrorField] || 1;
+    setCurrentStep(step);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Stepper currentStep={currentStep} setCurrentStep={setCurrentStep} />
       <div className="max-w-4xl mx-auto p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") e.preventDefault();
-          }}
+        <FormProvider
+          {...{ control, setValue, handleSubmit, formState: { errors } }}
         >
-          <StepContent
-            control={control}
-            currentStep={currentStep}
-            errors={errors}
-            setValue={setValue}
-            handleNextStep={handleNextStep}
-          />
-          {/* <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md mt-4"
+          <form
+            onSubmit={handleSubmit(onSubmit, onError)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.preventDefault();
+            }}
           >
-            Submit
-          </button> */}
-        </form>
+            <StepContent
+              control={control}
+              currentStep={currentStep}
+              errors={errors}
+              setValue={setValue}
+              handleNextStep={handleNextStep}
+            />
+          </form>
+        </FormProvider>
       </div>
     </div>
   );

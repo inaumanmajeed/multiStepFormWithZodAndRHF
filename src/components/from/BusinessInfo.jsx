@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InputComponent from "../shared/inputComponent";
-import { Controller, useWatch } from "react-hook-form";
-import Flags from "react-world-flags";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 
 import UploadImgIcon from "../../assets/images/cloudUpload.svg";
 import RemoveIcon from "../../assets/images/RemoveIcon.svg";
@@ -9,12 +8,15 @@ import { truncateString } from "../../utils/commonFunctions";
 import SelectComponent from "../shared/SelectComponent";
 import countryOptions from "../../utils/countryOptions";
 
-const BusinessInfo = ({ control, errors, setValue, handleNextStep }) => {
+const BusinessInfo = ({ handleNextStep }) => {
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
   const [images, setImages] = useState(null);
   const logoFile = useWatch({ control, name: "logo" });
-  const country = useWatch({ control, name: "country" });
 
-  console.log("🚀 ~ BusinessInfo ~ logoFile:", country);
   useEffect(() => {
     if (logoFile) {
       const fileURL = URL.createObjectURL(logoFile);
