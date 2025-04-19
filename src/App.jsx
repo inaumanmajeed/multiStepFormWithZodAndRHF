@@ -9,6 +9,7 @@ import LinkAccounts from "./components/from/LinkAccounts";
 import BusinessHours from "./components/from/BusinessHours";
 import { fieldToStepMap, initialValues } from "./utils/staticValues";
 import { cleanSubmittedValues } from "./utils/commonFunctions";
+import Layout from "./layout/Layout";
 
 const StepContent = ({ currentStep, handleNextStep }) => {
   switch (currentStep) {
@@ -220,44 +221,46 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Stepper
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        progressData={progressData}
-        zodErrors={errors}
-      />
-      <div className="max-w-4xl mx-auto shadowMain p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
-        <FormProvider {...methods}>
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.preventDefault();
-            }}
-          >
-            <StepContent
-              currentStep={currentStep}
-              handleNextStep={handleNextStep}
-            />
-          </form>
-          {currentStep === 4 && (
-            <div className="flex justify-center items-center mt-10">
-              <button
-                className="bg-[#2A9D8F] text-white w-full max-w-[371px] h-[50px] rounded-full"
-                onClick={handleSubmit(onSubmit, onError)}
-              >
-                Submit
-              </button>
-            </div>
-          )}
-        </FormProvider>
+    <Layout>
+      <div className="min-h-[calc(100vh-192px)]">
+        <Stepper
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          progressData={progressData}
+          zodErrors={errors}
+        />
+        <div className="max-w-4xl mx-auto shadowMain p-6 mt-6 border border-[#E6E9FA] bg-white rounded-lg">
+          <FormProvider {...methods}>
+            <form
+              onSubmit={handleSubmit(onSubmit, onError)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") e.preventDefault();
+              }}
+            >
+              <StepContent
+                currentStep={currentStep}
+                handleNextStep={handleNextStep}
+              />
+            </form>
+            {currentStep === 4 && (
+              <div className="flex justify-center items-center mt-10">
+                <button
+                  className="bg-[#2A9D8F] text-white w-full max-w-[371px] h-[50px] rounded-full"
+                  onClick={handleSubmit(onSubmit, onError)}
+                >
+                  Submit
+                </button>
+              </div>
+            )}
+          </FormProvider>
+        </div>
+        <ConsolePopup
+          isOpen={isPopupOpen}
+          onClose={() => setIsPopupOpen(false)}
+          submittedValues={submittedValues}
+        />
       </div>
-      <ConsolePopup
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-        submittedValues={submittedValues}
-      />
-    </div>
+    </Layout>
   );
 };
 
