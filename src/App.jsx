@@ -30,7 +30,50 @@ const initialValues = {
       webAddress: "",
     },
   ],
-  openingHours: [],
+  openingHours: [
+    {
+      day: "Monday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Tuesday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Wednesday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Thursday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Friday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Saturday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+    {
+      day: "Sunday",
+      open: false,
+      startTime: "",
+      endTime: "",
+    },
+  ],
   specialHours: [],
 };
 
@@ -75,7 +118,7 @@ const App = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [submittedValues, setSubmittedValues] = useState(null);
-  console.log("🚀 ~ App ~ submittedValues:", submittedValues);
+  console.log("🚀 ~ App ~ submittedValues:", submittedValues)
 
   const handleNextStep = () => {
     if (currentStep < 4) {
@@ -91,9 +134,9 @@ const App = () => {
 
   const onSubmit = (values) => {
     setSubmittedValues(values);
-    // setIsPopupOpen(true);
-    // setCurrentStep(1);
-    // methods.reset();
+    setIsPopupOpen(true);
+    // setCurrentStep(1); 
+    // methods.reset(); 
     // setIsPopupOpen(false);
   };
 

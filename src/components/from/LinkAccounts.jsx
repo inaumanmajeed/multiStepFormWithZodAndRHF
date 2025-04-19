@@ -9,7 +9,7 @@ const LinkAccounts = ({ handleNextStep }) => {
     control,
     setValue,
     formState: { errors },
-    getValues, // Use getValues instead of watch
+    watch,
   } = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
@@ -24,7 +24,7 @@ const LinkAccounts = ({ handleNextStep }) => {
   }, [fields.length, append]);
 
   const handleToggleConnection = (index) => {
-    const linkedAccounts = getValues("linkedAccounts");
+    const linkedAccounts = watch("linkedAccounts");
     const current = linkedAccounts?.[index];
     const isConnected = current?.isConnected;
 
@@ -41,7 +41,6 @@ const LinkAccounts = ({ handleNextStep }) => {
     } else {
       setValue(`linkedAccounts.${index}.isConnected`, true);
 
-      // Append a new empty row only if there's a webAddress
       if (current?.webAddress?.trim()) {
         append({ profile: "", webAddress: "", isConnected: false });
       }
@@ -56,7 +55,7 @@ const LinkAccounts = ({ handleNextStep }) => {
       </p>
 
       {fields.map((item, index) => {
-        const account = getValues("linkedAccounts")?.[index];
+        const account = watch("linkedAccounts")?.[index];
         const webAddressValue = account?.webAddress;
         const isConnected = account?.isConnected;
         const width = webAddressValue ? "50%" : "70%";
