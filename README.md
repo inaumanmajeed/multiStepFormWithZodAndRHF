@@ -4,6 +4,10 @@
 
 multiStepFormWithZodAndRHF is a React-based application designed to streamline the process of collecting and managing business information. It provides a step-by-step form interface for users to input details about their business, contact information, linked accounts, and operating hours. The application ensures data validation and offers a clean, user-friendly experience.
 
+## Live Link
+
+   https://inaumanmajeed.github.io/multiStepFormWithZodAndRHF/
+
 ## Features
 
 - **Multi-Step Form**: A stepper-based form to collect business details in an organized manner.
