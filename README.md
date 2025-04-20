@@ -1,9 +1,11 @@
-# SparkoSol
+# multiStepFormWithZodAndRHF
 
 ## Overview
-SparkoSol is a React-based application designed to streamline the process of collecting and managing business information. It provides a step-by-step form interface for users to input details about their business, contact information, linked accounts, and operating hours. The application ensures data validation and offers a clean, user-friendly experience.
+
+multiStepFormWithZodAndRHF is a React-based application designed to streamline the process of collecting and managing business information. It provides a step-by-step form interface for users to input details about their business, contact information, linked accounts, and operating hours. The application ensures data validation and offers a clean, user-friendly experience.
 
 ## Features
+
 - **Multi-Step Form**: A stepper-based form to collect business details in an organized manner.
 - **Business Information Management**: Collects and validates business details such as name, company number, VAT number, and address.
 - **Contact Details**: Captures primary contact information, including email and phone numbers.
@@ -13,12 +15,14 @@ SparkoSol is a React-based application designed to streamline the process of col
 - **Popup for Submitted Data**: Displays submitted data in a console popup for review.
 
 ## Tech Stack
+
 - **Frontend**: React, React Hook Form, Zod
 - **Styling**: Tailwind CSS
 - **Date & Time Pickers**: `react-time-picker`, `react-datepicker`
 - **State Management**: React's `useState` and `useFormContext` from React Hook Form
 
 ## Installation and Setup
+
 Follow these steps to set up the project locally:
 
 1. Clone the repository:
@@ -27,7 +31,7 @@ Follow these steps to set up the project locally:
    ```
 2. Navigate to the project directory:
    ```bash
-   cd sparkoSol
+   cd multiStepFormWithZodAndRHF
    ```
 3. Install dependencies:
    ```bash
@@ -43,6 +47,7 @@ Follow these steps to set up the project locally:
    ```
 
 ## How It Works
+
 1. **Multi-Step Form**: The application uses a stepper component to guide users through four steps:
    - **Step 1**: Business Information
    - **Step 2**: Contact Details
@@ -53,6 +58,7 @@ Follow these steps to set up the project locally:
 4. **Data Submission**: On form submission, the data is cleaned and displayed in a popup for review. The form resets after submission.
 
 ## File Structure
+
 - **`App.js`**: The main application file that manages the stepper, form submission, and popup display.
 - **`BusinessHours.js`**: Handles the business hours and special hours functionality, including toggles and time pickers.
 - **`schema.js`**: Defines the Zod schema for form validation.
@@ -61,6 +67,7 @@ Follow these steps to set up the project locally:
 - **`staticValues.js`**: Maps form fields to specific steps for error handling.
 
 ## Procedures
+
 1. **Step 1**: Enter business details such as name, company number, and VAT number.
 2. **Step 2**: Provide contact details, including primary contact name, email, and phone number.
 3. **Step 3**: Link external accounts by adding profile and web address details.
@@ -68,7 +75,9 @@ Follow these steps to set up the project locally:
 5. **Submit**: Review the data in a popup and reset the form for new entries.
 
 ## Contact
+
 For any inquiries, please contact:
+
 - **Name**: Nauman M.
 - **Email**: inaumanmajeed@gmail.com
 - **GitHub**: https://github.com/inaumanmajeed
